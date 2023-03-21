@@ -42,6 +42,7 @@ class BasicLayoutActivity : ComponentActivity() {
 }
 
 // Step: Search bar - Modifiers
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier

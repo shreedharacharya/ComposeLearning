@@ -10,10 +10,12 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -36,6 +38,56 @@ private val LightColorScheme = lightColorScheme(
     onSurface = Color(0xFF1C1B1F),
     */
 )
+
+private val LightColorsJetNews = lightColorScheme(
+    primary = Red700,
+    secondary = Red900,
+    onPrimary = Color.White,
+    tertiary = Red700,
+    onSecondary = Color.White,
+    error = Red800
+)
+private val DarkColorsJetNews = darkColorScheme(
+    primary = Red300,
+    secondary = Red700,
+    onPrimary = Color.Black,
+    tertiary = Red300,
+    onSecondary = Color.Black,
+    error = Red200
+)
+
+@Composable
+fun JetNewsTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = true,
+    content: @Composable () -> Unit
+) {
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+        darkTheme -> DarkColorsJetNews
+        else -> LightColorsJetNews
+    }
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val currentWindow = (view.context as Activity).window
+            currentWindow.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightStatusBars = darkTheme
+        }
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        shapes = JetNewsShapes,
+        typography = JetNewsTypography,
+        content = content
+    )
+}
 
 @Composable
 fun ComposeLearningTheme(

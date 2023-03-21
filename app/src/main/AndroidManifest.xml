@@ -15,7 +15,7 @@
             android:name=".BasicLayoutActivity"
             android:exported="false" />
         <activity
-            android:name=".state.StateActivity"
+            android:name=".theming.ThemeActivity"
             android:exported="true"
             android:theme="@style/Theme.ComposeLearning">
             <intent-filter>
